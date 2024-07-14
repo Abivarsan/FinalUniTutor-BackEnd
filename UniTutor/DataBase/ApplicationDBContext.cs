@@ -64,11 +64,16 @@ namespace UniTutor.DataBase
                 .WithMany(t => t.Requests)
                 .HasForeignKey(r => r.tutorId)
                 .OnDelete(DeleteBehavior.Restrict); // Change to Restrict or NoAction as needed
+            modelBuilder.Entity<Transaction>()
+               .HasOne(t => t.Tutor)
+               .WithMany(tu => tu.Transactions)
+               .HasForeignKey(t => t.tutorId)
+               .OnDelete(DeleteBehavior.Restrict); // Specify the behavior here
 
-            modelBuilder.Entity<Tutor>()
-                    .HasMany(t => t.Transactions)
-                    .WithOne()
-                    .Metadata.PrincipalToDependent.SetPropertyAccessMode(PropertyAccessMode.Field);
+            //modelBuilder.Entity<Tutor>()
+            //        .HasMany(t => t.Transactions)
+            //        .WithOne()
+            //        .Metadata.PrincipalToDependent.SetPropertyAccessMode(PropertyAccessMode.Field);
 
             // Additional configurations for other relationships...
 

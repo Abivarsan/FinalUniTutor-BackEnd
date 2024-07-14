@@ -12,8 +12,8 @@ using UniTutor.DataBase;
 namespace UniTutor.Migrations
 {
     [DbContext(typeof(ApplicationDBContext))]
-    [Migration("20240713091805_initial")]
-    partial class initial
+    [Migration("20240714082813_abi1")]
+    partial class abi1
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -379,7 +379,6 @@ namespace UniTutor.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("StripeSessionId")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("TransactionTime")
@@ -577,7 +576,7 @@ namespace UniTutor.Migrations
                     b.HasOne("UniTutor.Model.Tutor", "Tutor")
                         .WithMany("Transactions")
                         .HasForeignKey("tutorId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("Tutor");
