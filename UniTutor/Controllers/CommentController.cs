@@ -42,7 +42,11 @@ public class CommentController : ControllerBase
 
                 fullName = c.userType == "Student" ?
                            $"{c.Student.firstName} {c.Student.lastName}" :
-                           $"{c.Tutor.firstName} {c.Tutor.lastName}"
+                           $"{c.Tutor.firstName} {c.Tutor.lastName}",
+
+               profileUrl = c.userType == "Student" ?
+                           $"{c.Student.ProfileUrl} " :
+                           $"{c.Tutor.ProfileUrl}"
             })
             .ToList();
 
