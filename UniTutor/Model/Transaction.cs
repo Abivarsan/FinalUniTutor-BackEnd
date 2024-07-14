@@ -9,6 +9,7 @@ namespace UniTutor.Model
         public DateTime TransactionTime { get; set; }
         public string Description { get; set; }
         public int Coins { get; set; }
+
         [ForeignKey("Tutor")]
         public int tutorId { get; set; }
         public string? StripeSessionId { get; set; }

@@ -83,6 +83,7 @@ namespace UniTutor.DataBase
                 .HasForeignKey(r => r.studentId)
                 .OnDelete(DeleteBehavior.Restrict);
 
+
             // Additional configurations for other relationships...
 
             base.OnModelCreating(modelBuilder);

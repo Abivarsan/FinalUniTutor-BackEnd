@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace UniTutor.Migrations
 {
     /// <inheritdoc />
-    public partial class initial : Migration
+    public partial class abi1 : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -213,7 +213,7 @@ namespace UniTutor.Migrations
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Coins = table.Column<int>(type: "int", nullable: false),
                     tutorId = table.Column<int>(type: "int", nullable: false),
-                    StripeSessionId = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    StripeSessionId = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -223,7 +223,7 @@ namespace UniTutor.Migrations
                         column: x => x.tutorId,
                         principalTable: "Tutors",
                         principalColumn: "_id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
