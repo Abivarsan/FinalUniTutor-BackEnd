@@ -51,6 +51,8 @@ namespace UniTutor.Repository
 
         public async Task<Request> Create(RequestDto request)
         {
+            var slstTimeZone = TimeZoneInfo.FindSystemTimeZoneById("Asia/Colombo");
+            var slstTime = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, slstTimeZone);
             var srequest = new Request
             {
                 studentId = request.studentId,
@@ -58,7 +60,7 @@ namespace UniTutor.Repository
                 tutorId = request.tutorId,
                 studentEmail = request.studentEmail,
                 // status = request.status ?? "PENDING",
-                timestamp = DateTime.UtcNow
+                timestamp = slstTime
             };
 
             try
@@ -97,10 +99,15 @@ namespace UniTutor.Repository
                     var request = await _DBcontext.Requests.FindAsync(id);
                     if (request == null)
                     {
+                        Console.WriteLine("Request not found.");
                         return null; // or throw an exception as per your application's error handling strategy
                     }
 
+                    // Logging the current status of the request
+                    Console.WriteLine($"Current request status: {request.status}");
                     request.status = status;
+                    Console.WriteLine($"Updated request status to: {status}");
+
                     _DBcontext.Requests.Update(request);
 
                     if (status == "ACCEPTED")
@@ -141,10 +148,11 @@ namespace UniTutor.Repository
                 }
             }
         }
-    
 
 
-    public async Task<Request> Delete(int id)
+
+
+        public async Task<Request> Delete(int id)
         {
             var request = await _DBcontext.Requests.FindAsync(id);
             if (request == null)
