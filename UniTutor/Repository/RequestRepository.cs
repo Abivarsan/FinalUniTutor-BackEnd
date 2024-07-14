@@ -103,7 +103,7 @@ namespace UniTutor.Repository
                     request.status = status;
                     _DBcontext.Requests.Update(request);
 
-                    if (status == "ACCEPT")
+                    if (status == "ACCEPTED")
                     {
                         var tutor = await _DBcontext.Tutors.FindAsync(request.tutorId);
                         if (tutor != null)
@@ -114,7 +114,7 @@ namespace UniTutor.Repository
                                 tutorId = tutor._id,
                                 Coins = -20, // Adjust as per your business logic
                                 TransactionTime = DateTime.UtcNow,
-                                Description = "Accepted student request",
+                                Description = "Accept student request",
                                 StripeSessionId = ""
                             };
                             _DBcontext.Transactions.Add(transactionRecord);

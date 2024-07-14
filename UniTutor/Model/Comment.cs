@@ -25,6 +25,7 @@ namespace UniTutor.Model
 
         [NotMapped]
         public string? fullName => userType == "Student" ? $"{Student.firstName} {Student.lastName}" : $"{Tutor.firstName} {Tutor.lastName}";
+        public string? profileUrl => userType == "Student" ? $"{Student.ProfileUrl}" : $"{Tutor.ProfileUrl} ";
     }
 
 

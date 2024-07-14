@@ -1,9 +1,11 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using UniTutor.Interface;
-using UniTutor.Model;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Mvc;
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using UniTutor.DTO;
+using UniTutor.Interface;
+using UniTutor.Model;
 
 namespace UniTutor.Controllers
 {
@@ -14,12 +16,14 @@ namespace UniTutor.Controllers
         private readonly IReport _report;
         private readonly ITutor _tutor;
         private readonly IStudent _student;
+        private readonly IMapper _mapper;
 
-        public ReportController(IReport report, ITutor tutor, IStudent student)
+        public ReportController(IReport report, ITutor tutor, IStudent student, IMapper mapper)
         {
-            _report = report;
-            _tutor = tutor;
-            _student = student;
+            _report = report ?? throw new ArgumentNullException(nameof(report));
+            _tutor = tutor ?? throw new ArgumentNullException(nameof(tutor));
+            _student = student ?? throw new ArgumentNullException(nameof(student));
+            _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
         }
 
         // POST api/report/create/{sendermail}/{receivermail}
@@ -34,7 +38,7 @@ namespace UniTutor.Controllers
             try
             {
                 // Determine sender
-                var sender = _tutor.GetTutorByEmail(sendermail) ?? (object)_student.GetByMail(sendermail);
+                var sender =  _tutor.GetTutorByEmail(sendermail) ?? (object)_student.GetByMail(sendermail);
 
                 // Determine receiver
                 var receiver = _tutor.GetTutorByEmail(receivermail) ?? (object)_student.GetByMail(receivermail);
@@ -74,6 +78,7 @@ namespace UniTutor.Controllers
             }
         }
 
+        // GET api/report/{id}
         [HttpGet("{id}")]
         public async Task<ActionResult<Report>> GetReportById(int id)
         {
@@ -84,15 +89,17 @@ namespace UniTutor.Controllers
             }
             return report;
         }
+
+        // GET api/report/allreport
         [HttpGet("allreport")]
-        public async Task<ActionResult<Report>> GetAllReport()
+        public async Task<ActionResult<List<Report>>> GetAllReport()
         {
-            var report = await _report.GetAll();
-            if (report == null)
+            var reports = await _report.GetAll();
+            if (reports == null || reports.Count == 0)
             {
                 return NotFound();
             }
-            return Ok(report);
+            return Ok(reports);
         }
     }
 }

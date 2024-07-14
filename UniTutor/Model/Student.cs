@@ -34,7 +34,7 @@ namespace UniTutor.Model
         //navigation Property
        
         public virtual ICollection<Request> Requests { get; set; }
-        public virtual ICollection<Report> Reports { get; set; }
+        public  ICollection<Report> Reports { get; set; }= new List<Report>();
         // public virtual ICollection<TodoItem> TodoLists { get; set; }
 
         public ICollection<TodoItem> TodoItems { get; set; }

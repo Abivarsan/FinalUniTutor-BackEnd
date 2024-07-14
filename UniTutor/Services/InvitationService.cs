@@ -7,7 +7,7 @@ using UniTutor.Model;
 namespace UniTutor.Services
 {
     public class InvitationService : IInvitationService
-    {
+    {                                                                                                                 
         private readonly IMailService _mailService;
         private readonly ApplicationDBContext _DBcontext;
 

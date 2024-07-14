@@ -1,43 +1,42 @@
-﻿using AutoMapper;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 using UniTutor.DataBase;
 using UniTutor.Interface;
 using UniTutor.Model;
 
 namespace UniTutor.Repository
 {
-    public class ReportRepository: IReport
+    public class ReportRepository : IReport
     {
-        private ApplicationDBContext _DBcontext;
-        private readonly IConfiguration _config;
-        private readonly IMapper _mapper;
+        private readonly ApplicationDBContext _dbContext;
 
-        public ReportRepository(ApplicationDBContext DBcontext, IConfiguration config, IMapper mapper)
+        public ReportRepository(ApplicationDBContext dbContext)
         {
-            _DBcontext = DBcontext;
-            _config = config;
-            _mapper = mapper;
-
+            _dbContext = dbContext;
         }
-        //get report by id
+
         public async Task<Report> GetById(int id)
         {
-            var report = await _DBcontext.Reports.FindAsync(id);
+            var report = await _dbContext.Reports
+                .Include(r => r.Tutor)
+                .Include(r => r.Student)
+                .FirstOrDefaultAsync(r => r._id == id);
+
             return report;
-        }
-        //create report
-        public async Task<Report> Create(Report report)
-        {
-            _DBcontext.Reports.Add(report);
-            await _DBcontext.SaveChangesAsync();
-            return report;
-        }
-        //get all reports
-        public async Task<List<Report>> GetAll()
-        {
-            var reports = await _DBcontext.Reports.ToListAsync();
-            return reports;
         }
 
+        public async Task<Report> Create(Report report)
+        {
+            _dbContext.Reports.Add(report);
+            await _dbContext.SaveChangesAsync();
+            return report;
+        }
+
+        public async Task<List<Report>> GetAll()
+        {
+            var reports = await _dbContext.Reports.ToListAsync();
+            return reports;
+        }
     }
 }
