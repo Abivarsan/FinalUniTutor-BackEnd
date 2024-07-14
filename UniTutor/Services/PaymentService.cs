@@ -49,7 +49,7 @@ namespace UniTutor.Services
         },
                 Mode = "payment",
                 SuccessUrl = $"{domain}/Tutor/Coinbank",
-                CancelUrl = $"{domain}/cancel",
+                CancelUrl = $"{domain}/Tutor/Coinbank",
             };
 
             var service = new SessionService();

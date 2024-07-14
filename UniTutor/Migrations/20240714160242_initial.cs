@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace UniTutor.Migrations
 {
     /// <inheritdoc />
-    public partial class abi1 : Migration
+    public partial class initial : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -144,12 +144,14 @@ namespace UniTutor.Migrations
                         name: "FK_Reports_Students_studentId",
                         column: x => x.studentId,
                         principalTable: "Students",
-                        principalColumn: "_id");
+                        principalColumn: "_id",
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_Reports_Tutors_tutorId",
                         column: x => x.tutorId,
                         principalTable: "Tutors",
-                        principalColumn: "_id");
+                        principalColumn: "_id",
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
