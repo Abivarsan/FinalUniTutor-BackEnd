@@ -109,6 +109,10 @@ namespace UniTutor.Controllers
             {
                 return Unauthorized("Account not verified. Please contact the administrator.");
             }
+            if(loggedInTutor.isSuspended)
+            {
+                return Unauthorized("Account is suspended. Please contact the administrator.");
+            }
 
             // Authentication successful, generate JWT token
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["Jwt:Key"]));
@@ -118,10 +122,10 @@ namespace UniTutor.Controllers
             {
                 Subject = new ClaimsIdentity(new Claim[]
                 {
-            new Claim(ClaimTypes.Name, loggedInTutor.universityMail),  // Email claim
-            new Claim(ClaimTypes.NameIdentifier, loggedInTutor._id.ToString()),  // ID claim
-            new Claim(ClaimTypes.GivenName, loggedInTutor.firstName),  // Name claim
-            new Claim(ClaimTypes.Role, "Tutor")
+                    new Claim(ClaimTypes.Name, loggedInTutor.universityMail),  // Email claim
+                    new Claim(ClaimTypes.NameIdentifier, loggedInTutor._id.ToString()),  // ID claim
+                    new Claim(ClaimTypes.GivenName, loggedInTutor.firstName),  // Name claim
+                    new Claim(ClaimTypes.Role, "Tutor")
                 }),
                 Expires = DateTime.UtcNow.AddDays(30),
                 SigningCredentials = credentials

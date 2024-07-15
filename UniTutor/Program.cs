@@ -91,7 +91,7 @@ builder.Services.AddTransient<IRequest, RequestRepository>();
 builder.Services.AddScoped<IAnalytics, AnalyticsRepository>();
 builder.Services.AddScoped<ICurrentUsersTotal,CurrentUsersTotalRepository>();
 builder.Services.AddScoped<ILastJoined,LastJoinedRepository>();
-builder.Services.AddScoped<IReport, ReportRepository>();
+builder.Services.AddScoped<IReportService, ReportService>();
 builder.Services.AddScoped<ITodoItem, TodoItemRepository>();
 builder.Services.AddScoped<IReview, ReviewRepository>();
 builder.Services.AddScoped<IUser, UserRepository>();

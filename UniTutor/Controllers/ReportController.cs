@@ -1,98 +1,64 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using UniTutor.Interface;
-using UniTutor.Model;
-using System;
-using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 using UniTutor.DTO;
+using UniTutor.Interface;
 
-namespace UniTutor.Controllers
+[ApiController]
+[Route("api/[controller]")]
+public class ReportsController : ControllerBase
 {
-    [Route("api/[controller]")]
-    [ApiController]
-    public class ReportController : ControllerBase
+    private readonly IReportService _reportService;
+
+    public ReportsController(IReportService reportService)
     {
-        private readonly IReport _report;
-        private readonly ITutor _tutor;
-        private readonly IStudent _student;
+        _reportService = reportService;
+    }
 
-        public ReportController(IReport report, ITutor tutor, IStudent student)
+    [HttpPost]
+    public async Task<IActionResult> CreateReport([FromBody] CreateReportDto createReportDto)
+    {
+        if (!ModelState.IsValid)
         {
-            _report = report;
-            _tutor = tutor;
-            _student = student;
+            return BadRequest(ModelState);
         }
 
-        // POST api/report/create/{sendermail}/{receivermail}
-        [HttpPost("create/{sendermail}/{receivermail}")]
-        public async Task<ActionResult<Report>> CreateReport(string sendermail, string receivermail, [FromBody] ReportDto reportDto)
+        var report = await _reportService.CreateReportAsync(createReportDto);
+        return CreatedAtAction(nameof(GetReport), new { id = report._id }, report);
+    }
+
+    [HttpGet("{id}")]
+    public async Task<IActionResult> GetReport(int id)
+    {
+        var report = await _reportService.GetReportByIdAsync(id);
+
+        if (report == null)
         {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-
-            try
-            {
-                // Determine sender
-                var sender = _tutor.GetTutorByEmail(sendermail) ?? (object)_student.GetByMail(sendermail);
-
-                // Determine receiver
-                var receiver = _tutor.GetTutorByEmail(receivermail) ?? (object)_student.GetByMail(receivermail);
-
-                // Validate sender and receiver
-                if (sender == null || receiver == null)
-                {
-                    return NotFound("Sender or receiver not found.");
-                }
-
-                var report = new Report
-                {
-                    senderMail = sendermail,
-                    receiverMail = receivermail,
-                    description = reportDto.description,
-                    date = DateTime.UtcNow
-                };
-
-                // Assign Tutor or Student to the report
-                if (sender is Tutor senderTutor)
-                {
-                    report.tutorId = senderTutor._id;
-                    report.Tutor = senderTutor;
-                }
-                else if (sender is Student senderStudent)
-                {
-                    report.tutorId = senderStudent._id;
-                    report.Student = senderStudent;
-                }
-
-                var newReport = await _report.Create(report);
-                return CreatedAtAction(nameof(GetReportById), new { id = newReport._id }, newReport);
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(500, new { message = ex.Message, stackTrace = ex.StackTrace });
-            }
+            return NotFound();
         }
 
-        [HttpGet("{id}")]
-        public async Task<ActionResult<Report>> GetReportById(int id)
-        {
-            var report = await _report.GetById(id);
-            if (report == null)
-            {
-                return NotFound();
-            }
-            return report;
-        }
-        [HttpGet("allreport")]
-        public async Task<ActionResult<Report>> GetAllReport()
-        {
-            var report = await _report.GetAll();
-            if (report == null)
-            {
-                return NotFound();
-            }
-            return Ok(report);
-        }
+        return Ok(report);
+    }
+
+    [HttpGet("Al")]
+    public async Task<IActionResult> GetAllReports()
+    {
+        var reports = await _reportService.GetAllReportsAsync();
+        return Ok(reports);
+    }
+
+    [HttpPost("suspend")]
+    public async Task<IActionResult> SuspendUser(int userId, string userType)
+    {
+        var result = await _reportService.SuspendUserAsync(userId, userType);
+        if (!result) return BadRequest("User not found or invalid user type.");
+        return Ok("User suspended successfully.");
+    }
+
+    [HttpPost("restore")]
+    public async Task<IActionResult> RestoreUser(int userId, string userType)
+    {
+        var result = await _reportService.RestoreUserAsync(userId, userType);
+        if (!result) return BadRequest("User not found or invalid user type.");
+        return Ok("User restored successfully.");
     }
 }

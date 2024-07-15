@@ -1,11 +1,18 @@
-﻿using UniTutor.Model;
+﻿using UniTutor.DTO;
+using UniTutor.Model;
 
 namespace UniTutor.Interface
 {
-    public interface IReport
+    public interface IReportService
     {
-        Task<Report> Create(Report report);
-        Task<Report> GetById(int id);
-        public  Task<List<Report>> GetAll();
+        Task<Report> CreateReportAsync(CreateReportDto createReportDto);
+        public Task<Report> GetReportByIdAsync(int id);
+
+        Task<bool> SuspendUserAsync(int userId, string userType);
+        Task<bool> RestoreUserAsync(int userId, string userType);
+
+        //Getallreports metho
+        Task<List<Report>> GetAllReportsAsync();
+
     }
 }
