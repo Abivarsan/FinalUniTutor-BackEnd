@@ -33,7 +33,6 @@ namespace UniTutor.Model
 
 
         public virtual ICollection<Request> Requests { get; set; }
-       
         // public virtual ICollection<TodoItem> TodoLists { get; set; }
 
         public ICollection<TodoItem> TodoItems { get; set; }
