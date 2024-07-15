@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace UniTutor.Migrations
 {
     /// <inheritdoc />
-    public partial class abi1 : Migration
+    public partial class initial : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -149,6 +149,39 @@ namespace UniTutor.Migrations
                 });
 
             migrationBuilder.CreateTable(
+<<<<<<<< HEAD:UniTutor/Migrations/20240715062853_abi1.cs
+========
+                name: "Reports",
+                columns: table => new
+                {
+                    _id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    senderMail = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    receiverMail = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    description = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    date = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    tutorId = table.Column<int>(type: "int", nullable: true),
+                    studentId = table.Column<int>(type: "int", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Reports", x => x._id);
+                    table.ForeignKey(
+                        name: "FK_Reports_Students_studentId",
+                        column: x => x.studentId,
+                        principalTable: "Students",
+                        principalColumn: "_id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Reports_Tutors_tutorId",
+                        column: x => x.tutorId,
+                        principalTable: "Tutors",
+                        principalColumn: "_id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+>>>>>>>> 961ceb14e4bcbe805e25cf2fa28702d5377427ea:UniTutor/Migrations/20240714160242_initial.cs
                 name: "Subjects",
                 columns: table => new
                 {

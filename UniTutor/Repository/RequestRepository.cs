@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Http.HttpResults;
+using Microsoft.EntityFrameworkCore;
 using UniTutor.DataBase;
 using UniTutor.DTO;
 using UniTutor.Interface;
@@ -51,6 +52,8 @@ namespace UniTutor.Repository
 
         public async Task<Request> Create(RequestDto request)
         {
+            var slstTimeZone = TimeZoneInfo.FindSystemTimeZoneById("Asia/Colombo");
+            var slstTime = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, slstTimeZone);
             var srequest = new Request
             {
                 studentId = request.studentId,
@@ -58,7 +61,7 @@ namespace UniTutor.Repository
                 tutorId = request.tutorId,
                 studentEmail = request.studentEmail,
                 // status = request.status ?? "PENDING",
-                timestamp = DateTime.UtcNow
+                timestamp = slstTime
             };
 
             try
@@ -97,10 +100,15 @@ namespace UniTutor.Repository
                     var request = await _DBcontext.Requests.FindAsync(id);
                     if (request == null)
                     {
+                        Console.WriteLine("Request not found.");
                         return null; // or throw an exception as per your application's error handling strategy
                     }
 
+                    // Logging the current status of the request
+                    Console.WriteLine($"Current request status: {request.status}");
                     request.status = status;
+                    Console.WriteLine($"Updated request status to: {status}");
+
                     _DBcontext.Requests.Update(request);
 
                     if (status == "ACCEPTED")
@@ -113,8 +121,8 @@ namespace UniTutor.Repository
                             {
                                 tutorId = tutor._id,
                                 Coins = -20, // Adjust as per your business logic
-                                TransactionTime = DateTime.UtcNow,
-                                Description = "Accept student request",
+                                timestamp = DateTime.UtcNow,
+                                Description = "Paid for accept student",
                                 StripeSessionId = ""
                             };
                             _DBcontext.Transactions.Add(transactionRecord);
@@ -131,20 +139,28 @@ namespace UniTutor.Repository
                     await _DBcontext.SaveChangesAsync();
                     await transaction.CommitAsync();
                     Console.WriteLine("Transaction committed.");
-                    return request;
+                    return (request);
                 }
                 catch (Exception ex)
                 {
                     await transaction.RollbackAsync();
                     Console.WriteLine("Transaction rolled back. Error: " + ex.Message);
+
+                    // Logging inner exception details
+                    if (ex.InnerException != null)
+                    {
+                        Console.WriteLine("Inner Exception: " + ex.InnerException.Message);
+                    }
+
                     throw; // Propagate the exception to the calling method or controller
                 }
             }
         }
-    
 
 
-    public async Task<Request> Delete(int id)
+
+
+        public async Task<Request> Delete(int id)
         {
             var request = await _DBcontext.Requests.FindAsync(id);
             if (request == null)

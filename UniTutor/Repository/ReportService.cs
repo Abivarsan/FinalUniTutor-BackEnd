@@ -37,7 +37,7 @@ namespace UniTutor.Repository
             return await _context.Reports.FindAsync(id);
         }
 
-       
+
         public async Task<List<Report>> GetAllReportsAsync()
         {
             return await _context.Reports.ToListAsync();

@@ -16,12 +16,16 @@ namespace UniTutor.Controllers
         private readonly IRequest _request;
         private readonly ITutor _tutor;
         private readonly IConfiguration _config;
+        private readonly IStudent _student;
+        private readonly IEmailService _emailService;
 
-        public RequestController(IConfiguration config, IRequest request, ITutor tutor)
+
+        public RequestController(IConfiguration config, IRequest request, ITutor tutor,IStudent student)
         {
             _request = request;
             _tutor = tutor;
             _config = config;
+            _student = student;
         }
 
        
@@ -251,6 +255,21 @@ namespace UniTutor.Controllers
                 {
                     return NotFound();
                 }
+
+                if (statusDto.status == "ACCEPTED")
+                {
+                    var studentId = updatedRequest.studentId; // Assuming you have the StudentId in the updatedRequest
+                    var student = await _student.GetByIdAsync(studentId); // Get the student information
+                    if (student == null)
+                    {
+                        return NotFound("Student not found");
+                    }
+                    // Send welcome email
+                    var emailSubject = "Welcome to UniTutor!";
+                    var emailMessage = $@"$Dear { student.firstName},< br />< br /> Your request has been accepted.< br />< br /> Regards,< br /> Your Team";
+                    await _emailService.SendEmailAsync(student.email, emailSubject, emailMessage);
+                }
+
                 return Ok(updatedRequest);
             }
             catch (Exception ex)
@@ -258,6 +277,7 @@ namespace UniTutor.Controllers
                 return StatusCode(500, new { message = ex.Message });
             }
         }
+
 
 
 

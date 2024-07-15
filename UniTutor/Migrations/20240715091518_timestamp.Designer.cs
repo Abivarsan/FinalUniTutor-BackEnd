@@ -12,8 +12,13 @@ using UniTutor.DataBase;
 namespace UniTutor.Migrations
 {
     [DbContext(typeof(ApplicationDBContext))]
+<<<<<<<< HEAD:UniTutor/Migrations/20240715062853_abi1.Designer.cs
     [Migration("20240715062853_abi1")]
     partial class abi1
+========
+    [Migration("20240715091518_timestamp")]
+    partial class timestamp
+>>>>>>>> 961ceb14e4bcbe805e25cf2fa28702d5377427ea:UniTutor/Migrations/20240715091518_timestamp.Designer.cs
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -59,15 +64,15 @@ namespace UniTutor.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("_id"));
 
-                    b.Property<DateTime>("Date")
-                        .HasColumnType("datetime2");
-
                     b.Property<string>("commentText")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int?>("stuId")
                         .HasColumnType("int");
+
+                    b.Property<DateTime>("timestamp")
+                        .HasColumnType("datetime2");
 
                     b.Property<int?>("tutId")
                         .HasColumnType("int");
@@ -387,7 +392,7 @@ namespace UniTutor.Migrations
                     b.Property<string>("StripeSessionId")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime>("TransactionTime")
+                    b.Property<DateTime>("timestamp")
                         .HasColumnType("datetime2");
 
                     b.Property<int>("tutorId")
@@ -494,7 +499,21 @@ namespace UniTutor.Migrations
                 {
                     b.HasOne("UniTutor.Model.Student", null)
                         .WithMany("Reports")
+<<<<<<<< HEAD:UniTutor/Migrations/20240715062853_abi1.Designer.cs
                         .HasForeignKey("Student_id");
+========
+                        .HasForeignKey("studentId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("UniTutor.Model.Tutor", "Tutor")
+                        .WithMany("Reports")
+                        .HasForeignKey("tutorId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.Navigation("Student");
+
+                    b.Navigation("Tutor");
+>>>>>>>> 961ceb14e4bcbe805e25cf2fa28702d5377427ea:UniTutor/Migrations/20240715091518_timestamp.Designer.cs
                 });
 
             modelBuilder.Entity("UniTutor.Model.Request", b =>

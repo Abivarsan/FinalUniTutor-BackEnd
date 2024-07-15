@@ -20,7 +20,7 @@ namespace UniTutor.Model
         public int tutorId { get; set; }
 
         public Tutor Tutor { get; set; }
-        public virtual ICollection<Request> Requests { get; set; }
+        public  ICollection<Request> Requests { get; set; }
 
     }
 }

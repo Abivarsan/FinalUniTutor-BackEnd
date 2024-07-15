@@ -36,7 +36,7 @@ public class CommentController : ControllerBase
             {
                 c._id,
                 c.commentText, 
-                c.Date,
+                c.timestamp,
                 c.userType,
                // c.ProfileUrl,
 
@@ -61,7 +61,7 @@ public class CommentController : ControllerBase
             {
                 c._id,
                 c.commentText,
-                c.Date,
+                c.timestamp,
                 c.userType,
                 
 

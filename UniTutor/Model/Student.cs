@@ -33,16 +33,14 @@ namespace UniTutor.Model
 
         //navigation Property
        
-        //public virtual ICollection<Request> Requests { get; set; }
+        public virtual ICollection<Request> Requests { get; set; }
         public  ICollection<Report> Reports { get; set; }= new List<Report>();
         // public virtual ICollection<TodoItem> TodoLists { get; set; }
 
         public ICollection<TodoItem> TodoItems { get; set; }
         public ICollection<Comment> Comments { get; set; } = new List<Comment>();
 
-
-       public bool isSuspended { get; set; }
-
+        
 
     }
 
