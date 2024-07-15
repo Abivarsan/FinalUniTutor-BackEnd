@@ -266,11 +266,11 @@ namespace UniTutor.Controllers
                     }
                     // Send welcome email
                     var emailSubject = "Welcome to UniTutor!";
-                    var emailMessage = $@"$Dear { student.firstName},< br />< br /> Your request has been accepted.< br />< br /> Regards,< br /> Your Team";
+                    var emailMessage = $@"$Dear {student.firstName},< br />< br /> Your request has been accepted.< br />< br /> Regards,< br /> Your Team";
                     await _emailService.SendEmailAsync(student.email, emailSubject, emailMessage);
                 }
 
-                return Ok(updatedRequest);
+                return Ok();
             }
             catch (Exception ex)
             {
