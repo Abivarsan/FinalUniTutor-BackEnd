@@ -42,6 +42,8 @@ namespace UniTutor.Model
 
         public int Coins { get; set; }
 
+        public bool   isSuspended {  get; set; }
+
 
 
 
