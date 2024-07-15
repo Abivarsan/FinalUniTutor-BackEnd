@@ -42,7 +42,7 @@ namespace UniTutor.Repository
         
         public bool login(string email, string password)
         {
-            var tutor = _DBcontext.Tutors.FirstOrDefault(a => a.universityMail == email);
+            var tutor = _DBcontext.Tutors.FirstOrDefault(a => a.universityMail == email );
 
             if (tutor == null)
             {

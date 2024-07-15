@@ -32,8 +32,7 @@ namespace UniTutor.Model
         public ICollection<Transaction> Transactions { get; set; }
 
 
-        public  ICollection<Request> Requests { get; set; }
-       
+        public virtual ICollection<Request> Requests { get; set; }
         // public virtual ICollection<TodoItem> TodoLists { get; set; }
 
         public ICollection<TodoItem> TodoItems { get; set; }
@@ -47,7 +46,7 @@ namespace UniTutor.Model
 
 
 
-
+       public bool isSuspended { get; set; }
 
 
 

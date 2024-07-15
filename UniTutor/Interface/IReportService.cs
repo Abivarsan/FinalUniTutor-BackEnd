@@ -7,7 +7,6 @@ namespace UniTutor.Interface
     {
         Task<Report> CreateReportAsync(CreateReportDto createReportDto);
         public Task<Report> GetReportByIdAsync(int id);
-
         Task<bool> SuspendUserAsync(int userId, string userType);
         Task<bool> RestoreUserAsync(int userId, string userType);
 
@@ -16,3 +15,4 @@ namespace UniTutor.Interface
 
     }
 }
+

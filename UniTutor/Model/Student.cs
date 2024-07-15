@@ -30,19 +30,15 @@ namespace UniTutor.Model
         public DateTime CreatedAt { get; set;}
         public int?  numberofcomplain {  get; set; } 
 
-
         //navigation Property
        
-        public  ICollection<Request> Requests { get; set; }
-        
+        public virtual ICollection<Request> Requests { get; set; }
         // public virtual ICollection<TodoItem> TodoLists { get; set; }
 
         public ICollection<TodoItem> TodoItems { get; set; }
         public ICollection<Comment> Comments { get; set; } = new List<Comment>();
 
-        public bool isSuspended { get; set; }
-
-
+        
 
     }
 

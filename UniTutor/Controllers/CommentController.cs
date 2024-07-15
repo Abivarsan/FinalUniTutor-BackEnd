@@ -35,8 +35,7 @@ public class CommentController : ControllerBase
             .Select(c => new
             {
                 c._id,
-                c.commentText, 
-                c.timestamp,
+                c.commentText,                c.Date,
                 c.userType,
                // c.ProfileUrl,
 

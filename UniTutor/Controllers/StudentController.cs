@@ -104,21 +104,29 @@ namespace UniTutor.Controllers
             var password = studentLogin.password;
 
             var result = _student.Login(email, password);
-            if (result)
+
+            if (!result)
+            { 
+                return Unauthorized("Invalid email or password");
+            }
+            var loggedInStudent = _student.GetByMail(email);
+
+            if (loggedInStudent.isSuspended)
             {
-                var loggedInStudent = _student.GetByMail(email);
+                return Unauthorized("Account is suspended. Please contact the administrator.");
+            }
 
-                var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["Jwt:Key"]));
-                var credentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
+            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["Jwt:Key"]));
+            var credentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 
-                var tokenDescriptor = new SecurityTokenDescriptor
+            var tokenDescriptor = new SecurityTokenDescriptor
                 {
                     Subject = new ClaimsIdentity(new Claim[]
                     {
-         new Claim(ClaimTypes.Name, email),  // Email claim
-         new Claim(ClaimTypes.NameIdentifier, loggedInStudent._id.ToString()),  // Student ID claim
-         new Claim(ClaimTypes.GivenName, loggedInStudent.firstName),  // Student name claim
-         new Claim(ClaimTypes.Role, "Student")
+                 new Claim(ClaimTypes.Name, email),  // Email claim
+                 new Claim(ClaimTypes.NameIdentifier, loggedInStudent._id.ToString()),  // Student ID claim
+                 new Claim(ClaimTypes.GivenName, loggedInStudent.firstName),  // Student name claim
+                 new Claim(ClaimTypes.Role, "Student")
                     }),
                     Expires = DateTime.UtcNow.AddDays(30),
                     SigningCredentials = credentials
@@ -128,12 +136,11 @@ namespace UniTutor.Controllers
                 var token = tokenHandler.CreateToken(tokenDescriptor);
 
                 return Ok(new { token = tokenHandler.WriteToken(token), Id = loggedInStudent._id });
-            }
-            else
-            {
-                return Unauthorized("Invalid email or password");
-            }
         }
+            
+
+            
+        
 
         [HttpPut("ProfileUpdate{id}")]
         public async Task<IActionResult> UpdateStudent(int id, [FromBody] UpdateStudentDto updateStudentDto)

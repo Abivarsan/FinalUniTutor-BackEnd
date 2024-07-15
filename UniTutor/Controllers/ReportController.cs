@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using UniTutor.DataBase;
+using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 using UniTutor.DTO;
 using UniTutor.Interface;
 
@@ -63,13 +64,3 @@ public class ReportsController : ControllerBase
         return Ok("User restored successfully.");
     }
 }
-
-
-
-
-
-
-
-
-
-

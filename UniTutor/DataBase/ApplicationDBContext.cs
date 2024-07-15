@@ -15,9 +15,10 @@ namespace UniTutor.DataBase
         public DbSet<Tutor> Tutors { get; set; }
         public DbSet<Subject> Subjects { get; set; }
         public DbSet<Review> Reviews { get; set; }
-        public DbSet<Report> Reports { get; set; }
+
         public DbSet<Request> Requests { get; set; }
         public DbSet<Comment> Comments { get; set; }
+       public DbSet<Report> Reports { get; set; }
         public DbSet<TodoItem> TodoItems { get; set; }
         public DbSet<Invitation> Invitations { get; set; }
         public DbSet<Transaction> Transactions { get; set; }
@@ -71,7 +72,17 @@ namespace UniTutor.DataBase
                 .HasForeignKey(t => t.tutorId)
                 .OnDelete(DeleteBehavior.Restrict); // Specify the behavior here
                                                     // Configure relationships and other configurations
-           
+            modelBuilder.Entity<Report>()
+                .HasOne(r => r.Tutor)
+                .WithMany(t => t.Reports)
+                .HasForeignKey(r => r.tutorId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<Report>()
+                .HasOne(r => r.Student)
+                .WithMany(s => s.Reports)
+                .HasForeignKey(r => r.studentId)
+                .OnDelete(DeleteBehavior.Restrict);
 
 
             // Additional configurations for other relationships...
