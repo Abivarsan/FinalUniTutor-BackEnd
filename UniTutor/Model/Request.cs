@@ -11,14 +11,17 @@ namespace UniTutor.Model
 
         [Required]
         public int subjectId { get; set; }
+        public  Subject Subject { get; set; }
 
         [ForeignKey("Student")]
         [Required]
         public int studentId { get; set; }
+        public  Student Student { get; set; }
 
         [ForeignKey("Tutor")]
         [Required]
         public int tutorId { get; set; }
+        public  Tutor Tutor { get; set; }
 
         [Required]
         [EmailAddress]
@@ -31,10 +34,10 @@ namespace UniTutor.Model
         [Required]
         public DateTime timestamp { get; set; }
 
-      
-        public virtual Student Student { get; set; }
-        public virtual Subject Subject { get; set; }
-        public virtual Tutor Tutor { get; set; }
+        
+       
+       
+     
 
         public bool IsAccepted { get; set; }
         public bool IsRejected { get; set; }

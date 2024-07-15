@@ -26,13 +26,13 @@ public class CommentRepository : IComment
     public async Task CreateCommentAsync(string commentText, DateTime time, int Id, string usertype)
     {
         // Set CreatedAt to local time
-        TimeZoneInfo localZone = TimeZoneInfo.FindSystemTimeZoneById("Sri Lanka Standard Time"); // Change to your local time zone
-        DateTime localDateTime = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, localZone);
+        var slstTimeZone = TimeZoneInfo.FindSystemTimeZoneById("Asia/Colombo");
+        var slstTime = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, slstTimeZone);
 
         var comment = new Comment
         {
             commentText = commentText,
-            Date = localDateTime,
+            timestamp = slstTime,
             userType = usertype
         };
 
