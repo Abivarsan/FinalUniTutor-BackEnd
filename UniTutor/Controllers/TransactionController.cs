@@ -72,11 +72,14 @@ namespace UniTutor.Controllers
         public async Task<ActionResult<IEnumerable<Transaction>>> GetTransactionsByTutorId(int tutorId)
         {
             var transactions = await _transaction.GetTransactionsByTutorId(tutorId);
+            var slstTimeZone = TimeZoneInfo.FindSystemTimeZoneById("Asia/Colombo");
+            var slstTime = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, slstTimeZone);
 
+            
             var result = transactions.Select(t => new
             {
                 t.Id,
-                t.TransactionTime,
+                t.timestamp,
                 t.Description,
                 t.Coins
                 // Add more properties as needed

@@ -14,7 +14,7 @@ namespace UniTutor.Model
         public int _id { get; set; }
         public string userType { get; set; }
         public string commentText { get; set; }
-        public DateTime Date { get; set; }
+        public DateTime timestamp { get; set; }
 
         // Foreign key to Student or Tutor
         public int? stuId { get; set; }
@@ -23,7 +23,7 @@ namespace UniTutor.Model
         public Student Student { get; set; }
         public Tutor Tutor { get; set; }
 
-        [NotMapped]
+        [NotMapped]  
         public string? fullName => userType == "Student" ? $"{Student.firstName} {Student.lastName}" : $"{Tutor.firstName} {Tutor.lastName}";
         public string? profileUrl => userType == "Student" ? $"{Student.ProfileUrl}" : $"{Tutor.ProfileUrl} ";
     }

@@ -53,7 +53,7 @@ namespace UniTutor.Repository
 
         public async Task<List<WeeklyDataDto>> GetWeeklyCommentsAsync()
         {
-            return await GetWeeklyDataAsync(_context.Comments, c => c.Date);
+            return await GetWeeklyDataAsync(_context.Comments, c => c.timestamp);
         }
 
         private async Task<List<WeeklyDataDto>> GetWeeklyDataAsync<T>(IQueryable<T> query, Expression<Func<T, DateTime>> dateSelector)

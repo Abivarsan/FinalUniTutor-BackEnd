@@ -54,11 +54,14 @@ namespace UniTutor.Services
 
             var service = new SessionService();
             var session = service.Create(options);
+            var slstTimeZone = TimeZoneInfo.FindSystemTimeZoneById("Asia/Colombo");
+            var slstTime = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, slstTimeZone);
 
             // Save transaction history
             var transaction = new Transaction
             {
-                TransactionTime = DateTime.UtcNow,
+
+                timestamp = slstTime,
                 Description = createCheckoutSessionDto.Description,
                 Coins = createCheckoutSessionDto.Coins,
                 tutorId = userId,
@@ -70,10 +73,13 @@ namespace UniTutor.Services
         }
 
         public void AddTransaction(TransactionDto transactionDto)
+
         {
+            var slstTimeZone = TimeZoneInfo.FindSystemTimeZoneById("Asia/Colombo");
+            var slstTime = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, slstTimeZone);
             var transaction = new Transaction
             {
-                TransactionTime = DateTime.UtcNow,
+                timestamp = slstTime,
                 Description = transactionDto.Description,
                 Coins = transactionDto.Coins,
                 tutorId = transactionDto.tutorId // Assuming tutorId is correctly named in TransactionDto

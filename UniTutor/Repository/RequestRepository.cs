@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Http.HttpResults;
+using Microsoft.EntityFrameworkCore;
 using UniTutor.DataBase;
 using UniTutor.DTO;
 using UniTutor.Interface;
@@ -120,8 +121,8 @@ namespace UniTutor.Repository
                             {
                                 tutorId = tutor._id,
                                 Coins = -20, // Adjust as per your business logic
-                                TransactionTime = DateTime.UtcNow,
-                                Description = "Accept student request",
+                                timestamp = DateTime.UtcNow,
+                                Description = "Paid for accept student",
                                 StripeSessionId = ""
                             };
                             _DBcontext.Transactions.Add(transactionRecord);
@@ -138,12 +139,19 @@ namespace UniTutor.Repository
                     await _DBcontext.SaveChangesAsync();
                     await transaction.CommitAsync();
                     Console.WriteLine("Transaction committed.");
-                    return request;
+                    return (request);
                 }
                 catch (Exception ex)
                 {
                     await transaction.RollbackAsync();
                     Console.WriteLine("Transaction rolled back. Error: " + ex.Message);
+
+                    // Logging inner exception details
+                    if (ex.InnerException != null)
+                    {
+                        Console.WriteLine("Inner Exception: " + ex.InnerException.Message);
+                    }
+
                     throw; // Propagate the exception to the calling method or controller
                 }
             }
