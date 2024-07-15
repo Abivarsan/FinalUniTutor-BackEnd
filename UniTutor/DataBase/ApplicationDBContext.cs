@@ -72,17 +72,7 @@ namespace UniTutor.DataBase
                 .HasForeignKey(t => t.tutorId)
                 .OnDelete(DeleteBehavior.Restrict); // Specify the behavior here
                                                     // Configure relationships and other configurations
-            modelBuilder.Entity<Report>()
-                .HasOne(r => r.Tutor)
-                .WithMany(t => t.Reports)
-                .HasForeignKey(r => r.tutorId)
-                .OnDelete(DeleteBehavior.Restrict);
-
-            modelBuilder.Entity<Report>()
-                .HasOne(r => r.Student)
-                .WithMany(s => s.Reports)
-                .HasForeignKey(r => r.studentId)
-                .OnDelete(DeleteBehavior.Restrict);
+            
 
 
             // Additional configurations for other relationships...

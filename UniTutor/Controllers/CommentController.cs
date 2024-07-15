@@ -1,5 +1,4 @@
- 
-﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc;
 using UniTutor.DTO;
 using UniTutor.Interface;
 using UniTutor.Model;
@@ -19,10 +18,10 @@ public class CommentController : ControllerBase
     }
 
     [HttpPost("create/{Id}/{usertype}")]
-    public async Task<IActionResult> CreateStudentComment(int Id,string usertype, [FromBody] CreateComment createComment)
+    public async Task<IActionResult> CreateStudentComment(int Id, string usertype, [FromBody] CreateComment createComment)
     {
 
-        await _comment.CreateCommentAsync(createComment.commentText, createComment.Date, Id,usertype);
+        await _comment.CreateCommentAsync(createComment.commentText, createComment.Date, Id, usertype);
 
         return Ok();
     }
@@ -35,15 +34,16 @@ public class CommentController : ControllerBase
             .Select(c => new
             {
                 c._id,
-                c.commentText,                c.Date,
+                c.commentText,
+                c.timestamp,
                 c.userType,
-               // c.ProfileUrl,
+                // c.ProfileUrl,
 
                 fullName = c.userType == "Student" ?
                            $"{c.Student.firstName} {c.Student.lastName}" :
                            $"{c.Tutor.firstName} {c.Tutor.lastName}",
 
-               profileUrl = c.userType == "Student" ?
+                profileUrl = c.userType == "Student" ?
                            $"{c.Student.ProfileUrl} " :
                            $"{c.Tutor.ProfileUrl}"
             })
@@ -62,7 +62,7 @@ public class CommentController : ControllerBase
                 c.commentText,
                 c.timestamp,
                 c.userType,
-                
+
 
                 fullName = c.userType == "Student" ?
                            $"{c.Student.firstName} {c.Student.lastName}" :
