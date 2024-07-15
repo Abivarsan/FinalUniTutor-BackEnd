@@ -109,6 +109,10 @@ namespace UniTutor.Controllers
             {
                 return Unauthorized("Account not verified. Please contact the administrator.");
             }
+            if(loggedInTutor.isSuspended)
+            {
+                return Unauthorized("Account is suspended. Please contact the administrator.");
+            }
 
             // Authentication successful, generate JWT token
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["Jwt:Key"]));

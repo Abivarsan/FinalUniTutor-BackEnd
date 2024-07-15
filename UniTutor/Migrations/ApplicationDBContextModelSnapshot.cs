@@ -117,6 +117,9 @@ namespace UniTutor.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("_id"));
 
+                    b.Property<int?>("Student_id")
+                        .HasColumnType("int");
+
                     b.Property<DateTime>("date")
                         .HasColumnType("datetime2");
 
@@ -124,25 +127,23 @@ namespace UniTutor.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("receiverMail")
+                    b.Property<int>("reportedId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("reportedType")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("senderMail")
+                    b.Property<int>("reporterId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("reporterType")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<int?>("studentId")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("tutorId")
-                        .HasColumnType("int");
 
                     b.HasKey("_id");
 
-                    b.HasIndex("studentId");
-
-                    b.HasIndex("tutorId");
+                    b.HasIndex("Student_id");
 
                     b.ToTable("Reports");
                 });
@@ -160,6 +161,9 @@ namespace UniTutor.Migrations
 
                     b.Property<bool>("IsRejected")
                         .HasColumnType("bit");
+
+                    b.Property<int?>("Tutor_id")
+                        .HasColumnType("int");
 
                     b.Property<string>("status")
                         .IsRequired()
@@ -183,6 +187,8 @@ namespace UniTutor.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("_id");
+
+                    b.HasIndex("Tutor_id");
 
                     b.HasIndex("studentId");
 
@@ -263,6 +269,9 @@ namespace UniTutor.Migrations
                     b.Property<string>("grade")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("isSuspended")
+                        .HasColumnType("bit");
 
                     b.Property<string>("lastName")
                         .IsRequired()
@@ -430,6 +439,9 @@ namespace UniTutor.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<bool>("isSuspended")
+                        .HasColumnType("bit");
+
                     b.Property<string>("lastName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -483,25 +495,19 @@ namespace UniTutor.Migrations
 
             modelBuilder.Entity("UniTutor.Model.Report", b =>
                 {
-                    b.HasOne("UniTutor.Model.Student", "Student")
+                    b.HasOne("UniTutor.Model.Student", null)
                         .WithMany("Reports")
-                        .HasForeignKey("studentId")
-                        .OnDelete(DeleteBehavior.Restrict);
-
-                    b.HasOne("UniTutor.Model.Tutor", "Tutor")
-                        .WithMany("Reports")
-                        .HasForeignKey("tutorId")
-                        .OnDelete(DeleteBehavior.Restrict);
-
-                    b.Navigation("Student");
-
-                    b.Navigation("Tutor");
+                        .HasForeignKey("Student_id");
                 });
 
             modelBuilder.Entity("UniTutor.Model.Request", b =>
                 {
-                    b.HasOne("UniTutor.Model.Student", "Student")
+                    b.HasOne("UniTutor.Model.Tutor", null)
                         .WithMany("Requests")
+                        .HasForeignKey("Tutor_id");
+
+                    b.HasOne("UniTutor.Model.Student", "Student")
+                        .WithMany()
                         .HasForeignKey("studentId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -513,7 +519,7 @@ namespace UniTutor.Migrations
                         .IsRequired();
 
                     b.HasOne("UniTutor.Model.Tutor", "Tutor")
-                        .WithMany("Requests")
+                        .WithMany()
                         .HasForeignKey("tutorId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
@@ -587,8 +593,6 @@ namespace UniTutor.Migrations
 
                     b.Navigation("Reports");
 
-                    b.Navigation("Requests");
-
                     b.Navigation("TodoItems");
                 });
 
@@ -600,8 +604,6 @@ namespace UniTutor.Migrations
             modelBuilder.Entity("UniTutor.Model.Tutor", b =>
                 {
                     b.Navigation("Comments");
-
-                    b.Navigation("Reports");
 
                     b.Navigation("Requests");
 

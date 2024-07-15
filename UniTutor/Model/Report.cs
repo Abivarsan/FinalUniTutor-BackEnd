@@ -5,32 +5,14 @@ namespace UniTutor.Model
 {
     public class Report
     {
-        // Report model with senderId, receiverId, discription, and date properties here sender and resever can be tutor or student
         [Key]
         public int _id { get; set; }
-        [Required]
-        public string senderMail { get; set; }
-        [Required]
-        public string receiverMail { get; set; }
-        [Required]
         public string description { get; set; }
-        [Required]
         public DateTime date { get; set; }
-
-
-    
-        [ForeignKey("Tutor")]
-        public int? tutorId { get; set; }
-        public virtual Tutor Tutor { get; set; }
-
-        [ForeignKey("Student")]
-        public int? studentId { get; set; }
-        public virtual Student Student { get; set; }
-
-
-
-
-
+        public int reporterId { get; set; }    // e.g., "studentId" or "tutorId"
+        public int reportedId { get; set; }         // e.g., "studentId" or "tutorId"
+        public string reporterType { get; set; } // e.g., "Student" or "Tutor"
+        public string reportedType { get; set; }    // e.g., "Student" or "Tutor"
 
     }
 }

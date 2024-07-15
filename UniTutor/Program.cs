@@ -79,7 +79,7 @@ var emailConfig = builder.Configuration
     .Get<EmailConfiguration>();
 builder.Services.AddSingleton(emailConfig);
 builder.Services.AddTransient<IEmailService, EmailService>();
-
+builder.Services.Configure<AdminSettings>(builder.Configuration.GetSection("AdminSettings"));
 // Register repositories and services
 builder.Services.AddScoped<IAdmin, AdminRepository>();
 builder.Services.AddScoped<IStudent, StudentRepository>();
@@ -91,7 +91,7 @@ builder.Services.AddTransient<IRequest, RequestRepository>();
 builder.Services.AddScoped<IAnalytics, AnalyticsRepository>();
 builder.Services.AddScoped<ICurrentUsersTotal,CurrentUsersTotalRepository>();
 builder.Services.AddScoped<ILastJoined,LastJoinedRepository>();
-builder.Services.AddScoped<IReport, ReportRepository>();
+builder.Services.AddScoped<IReportService, ReportService>();
 builder.Services.AddScoped<ITodoItem, TodoItemRepository>();
 builder.Services.AddScoped<IReview, ReviewRepository>();
 builder.Services.AddScoped<IUser, UserRepository>();
@@ -111,6 +111,7 @@ builder.Services.AddSwaggerGen(c =>
     c.SwaggerDoc("v1", new OpenApiInfo { Title = "UniTutor API", Version = "v1" });
 });
 builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+
 
 var app = builder.Build();
 
