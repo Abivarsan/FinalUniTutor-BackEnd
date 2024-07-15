@@ -15,6 +15,7 @@ namespace UniTutor.DataBase
         public DbSet<Tutor> Tutors { get; set; }
         public DbSet<Subject> Subjects { get; set; }
         public DbSet<Review> Reviews { get; set; }
+        public DbSet<Report> Reports { get; set; }
         public DbSet<Request> Requests { get; set; }
         public DbSet<Comment> Comments { get; set; }
         public DbSet<TodoItem> TodoItems { get; set; }
