@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using UniTutor.DataBase;
 
@@ -11,9 +12,11 @@ using UniTutor.DataBase;
 namespace UniTutor.Migrations
 {
     [DbContext(typeof(ApplicationDBContext))]
-    partial class ApplicationDBContextModelSnapshot : ModelSnapshot
+    [Migration("20240715130405_menushhaaa333")]
+    partial class menushhaaa333
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -117,9 +120,6 @@ namespace UniTutor.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("_id"));
 
-                    b.Property<int?>("Student_id")
-                        .HasColumnType("int");
-
                     b.Property<DateTime>("date")
                         .HasColumnType("datetime2");
 
@@ -143,7 +143,6 @@ namespace UniTutor.Migrations
 
                     b.HasKey("_id");
 
-
                     b.ToTable("Reports");
                 });
 
@@ -160,9 +159,6 @@ namespace UniTutor.Migrations
 
                     b.Property<bool>("IsRejected")
                         .HasColumnType("bit");
-
-                    b.Property<int?>("Tutor_id")
-                        .HasColumnType("int");
 
                     b.Property<string>("status")
                         .IsRequired()
@@ -186,8 +182,6 @@ namespace UniTutor.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("_id");
-
-                    b.HasIndex("Tutor_id");
 
                     b.HasIndex("studentId");
 
@@ -492,15 +486,10 @@ namespace UniTutor.Migrations
                     b.Navigation("Tutor");
                 });
 
-
             modelBuilder.Entity("UniTutor.Model.Request", b =>
                 {
-                    b.HasOne("UniTutor.Model.Tutor", null)
-                        .WithMany("Requests")
-                        .HasForeignKey("Tutor_id");
-
                     b.HasOne("UniTutor.Model.Student", "Student")
-                        .WithMany()
+                        .WithMany("Requests")
                         .HasForeignKey("studentId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -512,7 +501,7 @@ namespace UniTutor.Migrations
                         .IsRequired();
 
                     b.HasOne("UniTutor.Model.Tutor", "Tutor")
-                        .WithMany()
+                        .WithMany("Requests")
                         .HasForeignKey("tutorId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
@@ -584,9 +573,7 @@ namespace UniTutor.Migrations
                 {
                     b.Navigation("Comments");
 
-
                     b.Navigation("Requests");
-
 
                     b.Navigation("TodoItems");
                 });
