@@ -117,7 +117,7 @@ namespace UniTutor.Controllers
         [HttpPost("Report/send-email")]
         public async Task<IActionResult> SendReportEmail([FromBody] SendReportEmailDto emailDto)
         {
-            await _admin.SendReportEmailAsync(emailDto);
+            await _admin.   SendReportEmailAsync(emailDto);
             return Ok(new { success = true });
         }
 

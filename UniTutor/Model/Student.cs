@@ -38,6 +38,7 @@ namespace UniTutor.Model
         public ICollection<TodoItem> TodoItems { get; set; }
         public ICollection<Comment> Comments { get; set; } = new List<Comment>();
 
+        public  bool isSuspended { get; set; } = false;
         
 
     }
